@@ -6,18 +6,18 @@
   <% end %>
 
   <%= label f, :name %>
-  <%= text_input f, :name %>
+  <%= text_input f, :name, class: "form-control" %>
   <%= error_tag f, :name %>
 
   <%= label f, :date %>
-  <%= datetime_select f, :date %>
+  <%= datetime_select f, :date, class: "form-control" %>
   <%= error_tag f, :date %>
 
   <%= label f, :description %>
-  <%= textarea f, :description %>
+  <%= textarea f, :description, class: "form-control" %>
   <%= error_tag f, :description %>
 
   <div>
-    <%= submit "Save" %>
+    <%= submit "Save", class: "btn btn-primary" %>
   </div>
 <% end %>
