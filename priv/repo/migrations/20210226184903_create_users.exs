@@ -5,7 +5,7 @@ defmodule EventApp.Repo.Migrations.CreateUsers do
     create table(:users) do
       add :name, :string, null: false
       add :email, :string, null: false
-      add :password, :string, null: false, default: ""
+      add :password_hash, :string, null: false, default: ""
 
       timestamps()
     end

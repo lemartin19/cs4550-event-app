@@ -6,6 +6,7 @@ defmodule EventApp.Events.Event do
     field :date, :naive_datetime
     field :description, :string
     field :name, :string
+    belongs_to :user, EventApp.Users.User
 
     timestamps()
   end
