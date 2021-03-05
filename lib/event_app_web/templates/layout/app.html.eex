@@ -10,30 +10,35 @@
   </head>
   <body>
     <div role="main" class="container">
-      <div class="row">
-        <div class="col my-2">
+      <div class="d-flex flex-row justify-content-between mt-2">
+        <div>
           <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-            <p>
-              <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %>
-            </p>
+            <div class="d-flex flex-column">
+              <div class="mb-1">
+                <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %>
+              </div>
+              <%= link "Home", to: Routes.page_path(@conn, :index) %>
+            </div>
           <% end %>
         </div>
 
         <%= if @conn.assigns[:current_user] do %>
-          <div class="col">
-            User: <%= @current_user.name %>
-            <%= link("Logout", to: Routes.session_path(@conn, :delete),
-            method: :delete) %>
+          <div class="d-flex flex-column">
+            <div class="mb-2">User: <%= @current_user.name %></div>
+            <div>
+              <%= link("Logout", to: Routes.session_path(@conn, :delete),
+              method: :delete) %>
+            </div>
           </div>
         <% else %>
-          <div class="col">
-            <%= form_for @conn, Routes.session_path(@conn, :create),
-            [class: "form-inline"], fn f -> %>
-              <%= text_input f, :email, class: "form-control" %>
-              <%= submit "Login", class: "btn btn-secondary" %>
-            <% end %>
-          </div>
-          <div class="col my-2">
+          <div class="d-flex flex-column align-items-end">
+            <div class="mb-2">
+              <%= form_for @conn, Routes.session_path(@conn, :create),
+              [class: "form-inline"], fn f -> %>
+                <%= text_input f, :email, class: "form-control" %>
+                <%= submit "Login", class: "btn btn-secondary" %>
+              <% end %>
+            </div>
             <%= link "Register", to: Routes.user_path(@conn, :new) %>
           </div>
         <% end %>
