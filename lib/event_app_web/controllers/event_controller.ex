@@ -4,8 +4,18 @@ defmodule EventAppWeb.EventController do
   alias EventApp.Events
   alias EventApp.Events.Event
 
+  defp date_string(%{date: date}) do
+    hour = if date.hour >= 12 do date.hour - 12 else date.hour end
+    |> (fn hh -> if hh == 0 do 12 else hh end end).()
+    am_or_pm = if date.hour >= 12 do "AM" else "PM" end
+    "#{date.month}/#{date.day}/#{date.year} at #{hour}:#{date.minute} #{am_or_pm}"
+  end
+
   def index(conn, _params) do
     events = Events.list_events()
+    |> Enum.map(fn event ->
+        Map.put(event, :date_string, date_string(event))
+      end)
     render(conn, "index.html", events: events)
   end
 
@@ -15,6 +25,10 @@ defmodule EventAppWeb.EventController do
   end
 
   def create(conn, %{"event" => event_params}) do
+    event_params = event_params
+    |> Map.put("user_id", conn.assigns[:current_user].id)
+    IO.inspect(event_params)
+
     case Events.create_event(event_params) do
       {:ok, event} ->
         conn
@@ -28,6 +42,7 @@ defmodule EventAppWeb.EventController do
 
   def show(conn, %{"id" => id}) do
     event = Events.get_event!(id)
+    |> (fn event -> Map.put(event, :date_string, date_string(event)) end).()
     render(conn, "show.html", event: event)
   end
 

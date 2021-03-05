@@ -5,6 +5,12 @@
 </div>
 
 <div class="row">
+  <div class="col mb-2">
+    <%= link "New Event", to: Routes.event_path(@conn, :new) %>
+  </div>
+</div>
+
+<div class="row">
   <%= for event <- @events do %>
     <div class="col-sm-4 card">
       <div class="card-header">
