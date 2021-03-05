@@ -6,9 +6,9 @@ defmodule EventApp.UsersTest do
   describe "users" do
     alias EventApp.Users.User
 
-    @valid_attrs %{email: "some email", name: "some name", password: "some password"}
-    @update_attrs %{email: "some updated email", name: "some updated name", password: "some updated password"}
-    @invalid_attrs %{email: nil, name: nil, password: nil}
+    @valid_attrs %{email: "some email", name: "some name", password_hash: "some password"}
+    @update_attrs %{email: "some updated email", name: "some updated name", password_hash: "some updated password"}
+    @invalid_attrs %{email: nil, name: nil, password_hash: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -33,7 +33,7 @@ defmodule EventApp.UsersTest do
       assert {:ok, %User{} = user} = Users.create_user(@valid_attrs)
       assert user.email == "some email"
       assert user.name == "some name"
-      assert user.password == "some password"
+      assert user.password_hash == "some password"
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -45,7 +45,7 @@ defmodule EventApp.UsersTest do
       assert {:ok, %User{} = user} = Users.update_user(user, @update_attrs)
       assert user.email == "some updated email"
       assert user.name == "some updated name"
-      assert user.password == "some updated password"
+      assert user.password_hash == "some updated password"
     end
 
     test "update_user/2 with invalid data returns error changeset" do

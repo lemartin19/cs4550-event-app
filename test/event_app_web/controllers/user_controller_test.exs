@@ -30,11 +30,11 @@ defmodule EventAppWeb.UserControllerTest do
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), user: @create_attrs)
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.user_path(conn, :show, id)
+      assert %{} = redirected_params(conn)
+      assert redirected_to(conn) == Routes.page_path(conn, :index)
 
-      conn = get(conn, Routes.user_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show User"
+      conn = get(conn, Routes.page_path(conn, :index))
+      assert html_response(conn, 200) =~ "Event feed"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
