@@ -20,5 +20,6 @@ ally = Repo.insert!(%User{name: "ally", email: "ally@yahoo.com"})
 Repo.insert!(%Event{
   user_id: lynnsey.id,
   name: "the twins' bday bash",
-  description: "come celebrate lynnsey and ally's 23rd birthdays"
+  description: "come celebrate lynnsey and ally's 23rd birthdays",
+  date: ~N[2021-07-15 18:00:00]
 })

@@ -7,8 +7,9 @@ defmodule EventAppWeb.EventController do
   defp date_string(%{date: date}) do
     hour = if date.hour >= 12 do date.hour - 12 else date.hour end
     |> (fn hh -> if hh == 0 do 12 else hh end end).()
+    minutes = String.pad_leading("#{date.minute}", 2, "0")
     am_or_pm = if date.hour >= 12 do "AM" else "PM" end
-    "#{date.month}/#{date.day}/#{date.year} at #{hour}:#{date.minute} #{am_or_pm}"
+    "#{date.month}/#{date.day}/#{date.year} at #{hour}:#{minutes} #{am_or_pm}"
   end
 
   def index(conn, _params) do
@@ -25,10 +26,14 @@ defmodule EventAppWeb.EventController do
   end
 
   def create(conn, %{"event" => event_params}) do
-    event_params = event_params
-    |> Map.put("user_id", conn.assigns[:current_user].id)
-    IO.inspect(event_params)
+    id = if conn.assigns[:current_user] do
+      conn.assigns[:current_user].id 
+    else
+      nil
+    end
 
+    event_params = event_params
+    |> Map.put("user_id", id)
     case Events.create_event(event_params) do
       {:ok, event} ->
         conn

@@ -11,7 +11,7 @@
   <%= error_tag f, :name %>
 
   <%= label f, :date %>
-  <%= datetime_select f, :date, class: "form-control" %>
+  <%= text_input f, :date, class: "form-control" %>
   <%= error_tag f, :date %>
 
   <%= label f, :description %>

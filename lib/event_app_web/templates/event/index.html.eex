@@ -19,7 +19,11 @@
       <td><%= event.name %></td>
       <td><%= event.date_string %></td>
       <td><%= event.description %></td>
-      <td><%= event.user.name %></td>
+      <td>
+        <%= if event.user do %>
+          <%= event.user.name %>
+        <% end %>
+      </td>
 
       <td>
         <span><%= link "Show", to: Routes.event_path(@conn, :show, event) %></span>
