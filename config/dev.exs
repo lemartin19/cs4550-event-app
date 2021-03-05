@@ -1,5 +1,8 @@
 use Mix.Config
 
+config :event_app, EventAppWeb.Endpoint,
+  env: "dev"
+
 # Configure your database
 config :event_app, EventApp.Repo,
   username: "event_app",
