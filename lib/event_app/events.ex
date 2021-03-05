@@ -19,6 +19,7 @@ defmodule EventApp.Events do
   """
   def list_events do
     Repo.all(Event)
+    |> Repo.preload(:user)
   end
 
   @doc """
@@ -35,7 +36,10 @@ defmodule EventApp.Events do
       ** (Ecto.NoResultsError)
 
   """
-  def get_event!(id), do: Repo.get!(Event, id)
+  def get_event!(id) do
+    Repo.get!(Event, id)
+    |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a event.

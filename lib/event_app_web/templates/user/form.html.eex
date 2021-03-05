@@ -2,6 +2,7 @@
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
+      <i><%= inspect(@changeset.errors) %></i>
     </div>
   <% end %>
 
@@ -17,11 +18,13 @@
     <%= error_tag f, :email %>
   </div>
 
+  <!-- Not necessary for now
   <div class="form-group">
     <%= label f, :password_hash, "Pasword" %>
     <%= password_input f, :password_hash, class: "form-control" %>
     <%= error_tag f, :password_hash %>
   </div>
+  -->
 
   <div class="d-flex align-items-center">
     <%= submit "Save", class: "btn btn-primary mr-2" %>

@@ -15,6 +15,7 @@ defmodule EventApp.Users.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:name, :email, :password_hash])
-    |> validate_required([:name, :email, :password_hash])
+    |> validate_required([:name, :email])
+    # TODO: when the password is required, add it back up there ^
   end
 end
