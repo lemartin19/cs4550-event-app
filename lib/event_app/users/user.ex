@@ -17,5 +17,6 @@ defmodule EventApp.Users.User do
     |> cast(attrs, [:name, :email, :password_hash])
     |> validate_required([:name, :email])
     # TODO: when the password is required, add it back up there ^
+    |> unique_constraint(:email)
   end
 end
