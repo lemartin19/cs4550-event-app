@@ -15,14 +15,14 @@ defmodule EventAppWeb.EventControllerTest do
   describe "index" do
     test "lists all events", %{conn: conn} do
       conn = get(conn, Routes.event_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Events"
+      assert html_response(conn, 200) =~ "All Events"
     end
   end
 
   describe "new event" do
     test "renders form", %{conn: conn} do
       conn = get(conn, Routes.event_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Event"
+      assert html_response(conn, 200) =~ "Make a new event"
     end
   end
 
@@ -34,12 +34,12 @@ defmodule EventAppWeb.EventControllerTest do
       assert redirected_to(conn) == Routes.event_path(conn, :show, id)
 
       conn = get(conn, Routes.event_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Event"
+      assert html_response(conn, 200) =~ @create_attrs.name
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.event_path(conn, :create), event: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Event"
+      assert html_response(conn, 200) =~ "Make a new event"
     end
   end
 
