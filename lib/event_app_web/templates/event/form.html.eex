@@ -6,19 +6,26 @@
     </div>
   <% end %>
 
-  <%= label f, :name %>
-  <%= text_input f, :name, class: "form-control" %>
-  <%= error_tag f, :name %>
-
-  <%= label f, :date %>
-  <%= text_input f, :date, class: "form-control" %>
-  <%= error_tag f, :date %>
-
-  <%= label f, :description %>
-  <%= textarea f, :description, class: "form-control" %>
-  <%= error_tag f, :description %>
-
   <div>
-    <%= submit "Save", class: "btn btn-primary" %>
+    <%= label f, :name %>
+    <%= text_input f, :name, class: "form-control" %>
+    <%= error_tag f, :name %>
+  </div>
+
+  <div class="mt-1">
+    <%= label f, :date %>
+    <%= text_input f, :date, class: "form-control" %>
+    <%= error_tag f, :date %>
+  </div>
+
+  <div class="mt-1">
+    <%= label f, :description %>
+    <%= textarea f, :description, class: "form-control" %>
+    <%= error_tag f, :description %>
+  </div>
+
+  <div class="mt-3">
+    <%= submit "Save", class: "btn btn-primary mr-2" %>
+    <span><%= link "Back", to: Routes.event_path(@conn, :index) %></span>
   </div>
 <% end %>
