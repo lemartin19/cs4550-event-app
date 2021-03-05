@@ -5,10 +5,10 @@ defmodule EventAppWeb.EventController do
   alias EventApp.Events.Event
 
   defp date_string(%{date: date}) do
+    am_or_pm = if date.hour < 12 do "AM" else "PM" end
     hour = if date.hour >= 12 do date.hour - 12 else date.hour end
     |> (fn hh -> if hh == 0 do 12 else hh end end).()
     minutes = String.pad_leading("#{date.minute}", 2, "0")
-    am_or_pm = if date.hour >= 12 do "AM" else "PM" end
     "#{date.month}/#{date.day}/#{date.year} at #{hour}:#{minutes} #{am_or_pm}"
   end
 
