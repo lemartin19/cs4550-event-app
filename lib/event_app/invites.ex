@@ -50,6 +50,7 @@ defmodule EventApp.Invites do
 
   """
   def create_invite(attrs \\ %{}) do
+    IO.inspect(attrs)
     %Invite{}
     |> Invite.changeset(attrs)
     |> Repo.insert()

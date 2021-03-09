@@ -26,7 +26,8 @@ defmodule EventAppWeb.InviteController do
 
   def create(conn, %{"invite" => invite_params}) do
     event = conn.assigns[:event]
-    invite_params = Map.put(invite_params, "event_id", event.id)
+    invite_params = invite_params
+    |> Map.put("event_id", event.id)
 
     case Invites.create_invite(invite_params) do
       {:ok, invite} ->
