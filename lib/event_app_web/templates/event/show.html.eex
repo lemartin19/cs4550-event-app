@@ -1,13 +1,11 @@
-<div class="my-3">
-  <h2><%= @event.name %></h2>
-  <h4>
-    <small><%= @event.date %></small>
-  </h4>
-  <div>
-    Hosted by: <%= @event.user.name %>
-  </div>
-  <div class="my-2"><%= @event.description %></div>
+<h1><%= @event.name %></h1>
+<h3>
+  <small><%= @event.date %></small>
+</h3>
+<div>
+  Hosted by: <%= @event.user.name %>
 </div>
+<div class="my-2"><%= @event.description %></div>
 
 <%= if current_user_is?(@conn, @event.user) do %>
   <span class="mr-2"><%= link "Edit", to: Routes.event_path(@conn, :edit, @event) %></span>

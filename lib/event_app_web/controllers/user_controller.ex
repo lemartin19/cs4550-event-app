@@ -4,11 +4,6 @@ defmodule EventAppWeb.UserController do
   alias EventApp.Users
   alias EventApp.Users.User
 
-  def index(conn, _params) do
-    users = Users.list_users()
-    render(conn, "index.html", users: users)
-  end
-
   def new(conn, _params) do
     changeset = Users.change_user(%User{})
     render(conn, "new.html", changeset: changeset)
