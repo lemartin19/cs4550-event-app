@@ -33,7 +33,7 @@ defmodule EventAppWeb.InviteController do
       {:ok, invite} ->
         conn
         |> put_flash(:info, "Invite created successfully.")
-        |> redirect(to: Routes.invite_path(conn, :show, invite))
+        |> redirect(to: Routes.event_path(conn, :show, event))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
