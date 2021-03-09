@@ -8,11 +8,13 @@
 <div class="my-2"><%= @event.description %></div>
 
 <%= if current_user_is?(@conn, @event.user) do %>
-  <%= render EventAppWeb.InviteView, "new.html",
-  default_invite_changeset(assigns) %>
-<% end %>
-
-<%= if current_user_is?(@conn, @event.user) do %>
   <span class="mr-2"><%= link "Edit", to: Routes.event_path(@conn, :edit, @event) %></span>
 <% end %>
 <span><%= link "Back", to: Routes.event_path(@conn, :index) %></span>
+
+<div class="mt-4">
+  <%= if current_user_is?(@conn, @event.user) do %>
+    <%= render EventAppWeb.InviteView, "new.html",
+    default_invite_changeset(assigns) %>
+  <% end %>
+</div>

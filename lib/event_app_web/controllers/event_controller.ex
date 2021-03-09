@@ -5,11 +5,10 @@ defmodule EventAppWeb.EventController do
   alias EventApp.Events.Event
 
   alias EventAppWeb.Plugs
-  plug Plugs.RequireUser when action not in [
-    :index, :show]
+  plug Plugs.RequireUser
   plug Plugs.FetchEvent when action in [
     :show, :edit, :update, :delete]
-  plug :require_owner when action in [
+  plug Plugs.RequireOwner when action in [
     :edit, :update, :delete]
 
   defp date_string(date) do
@@ -18,19 +17,6 @@ defmodule EventAppWeb.EventController do
     |> (fn hh -> if hh == 0 do 12 else hh end end).()
     minutes = String.pad_leading("#{date.minute}", 2, "0")
     "#{date.month}/#{date.day}/#{date.year} at #{hour}:#{minutes} #{am_or_pm}"
-  end
-
-  def require_owner(conn, _args) do
-    current_user = conn.assigns[:current_user]
-    event = conn.assigns[:event]
-    if current_user.id == event.user_id do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You do not own this.")
-      |> redirect(to: Routes.page_path(conn, :index))
-      |> halt()
-    end
   end
 
   def index(conn, _params) do

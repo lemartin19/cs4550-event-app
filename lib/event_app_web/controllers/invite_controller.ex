@@ -3,11 +3,31 @@ defmodule EventAppWeb.InviteController do
 
   alias EventApp.Invites
   alias EventApp.Invites.Invite
+  import EventAppWeb.EventView
 
   alias EventAppWeb.Plugs
+  plug Plugs.RequireUser
   plug Plugs.FetchEvent when action in [:create]
+  plug Plugs.RequireOwner when action in [:create, :delete]
+  plug :require_invitee when action in [:update, :edit]
+
+  def require_invitee(conn, _args) do
+    current_user = conn.assigns[:current_user]
+    event = conn.assigns[:event]
+    if current_user.id == event.user_id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You do not own this.")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
+    end
+  end
 
   def create(conn, %{"invite" => invite_params}) do
+    event = conn.assigns[:event]
+    invite_params = Map.put(invite_params, "event_id", event.id)
+
     case Invites.create_invite(invite_params) do
       {:ok, invite} ->
         conn
@@ -15,7 +35,9 @@ defmodule EventAppWeb.InviteController do
         |> redirect(to: Routes.invite_path(conn, :show, invite))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(EventAppWeb.EventView, "edit.html", invite_changeset: changeset)
+        conn
+        |> put_view(EventAppWeb.EventView)
+        |> render(:show, event: event, invite_changeset: changeset)
     end
   end
 
@@ -27,7 +49,7 @@ defmodule EventAppWeb.InviteController do
   def edit(conn, %{"id" => id}) do
     invite = Invites.get_invite!(id)
     changeset = Invites.change_invite(invite)
-    render(conn, "edit.html", invite: invite, changeset: changeset)
+    render(conn, "response.html", invite: invite, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "invite" => invite_params}) do
