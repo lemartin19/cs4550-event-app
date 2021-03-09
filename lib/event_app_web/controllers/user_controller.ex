@@ -38,8 +38,6 @@ defmodule EventAppWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    user_params = user_params
-    |> Map.put("password_hash", "")
     case Users.create_user(user_params) do
       {:ok, user} ->
         conn

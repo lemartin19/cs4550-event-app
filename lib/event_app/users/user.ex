@@ -5,7 +5,6 @@ defmodule EventApp.Users.User do
   schema "users" do
     field :email, :string
     field :name, :string
-    field :password_hash, :string
     has_many :events, EventApp.Events.Event
 
     timestamps()
@@ -14,9 +13,8 @@ defmodule EventApp.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :password_hash])
+    |> cast(attrs, [:name, :email])
     |> validate_required([:name, :email])
-    # TODO: when the password is required, add it back up there ^
     |> unique_constraint(:email)
   end
 end

@@ -14,17 +14,9 @@
 
   <div class="form-group">
     <%= label f, :email %>
-    <%= text_input f, :email, class: "form-control" %>
+    <%= email_input f, :email, class: "form-control" %>
     <%= error_tag f, :email %>
   </div>
-
-  <!-- Not necessary for now
-  <div class="form-group">
-    <%= label f, :password_hash, "Pasword" %>
-    <%= password_input f, :password_hash, class: "form-control" %>
-    <%= error_tag f, :password_hash %>
-  </div>
-  -->
 
   <div class="d-flex align-items-center">
     <%= submit "Save", class: "btn btn-primary mr-2" %>
