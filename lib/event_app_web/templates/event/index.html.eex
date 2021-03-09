@@ -17,7 +17,7 @@
 <%= for event <- @events do %>
     <tr>
       <td><%= event.name %></td>
-      <td><%= event.date_string %></td>
+      <td><%= event.date %></td>
       <td><%= event.description %></td>
       <td>
         <%= if event.user do %>

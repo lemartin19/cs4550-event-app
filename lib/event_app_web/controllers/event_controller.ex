@@ -4,7 +4,15 @@ defmodule EventAppWeb.EventController do
   alias EventApp.Events
   alias EventApp.Events.Event
 
-  defp date_string(%{date: date}) do
+  alias EventAppWeb.Plugs
+  plug Plugs.RequireUser when action not in [
+    :index, :show]
+  plug :fetch_event when action in [
+    :show, :edit, :update, :delete]
+  plug :require_owner when action in [
+    :edit, :update, :delete]
+
+  defp date_string(date) do
     am_or_pm = if date.hour < 12 do "AM" else "PM" end
     hour = if date.hour >= 12 do date.hour - 12 else date.hour end
     |> (fn hh -> if hh == 0 do 12 else hh end end).()
@@ -12,11 +20,28 @@ defmodule EventAppWeb.EventController do
     "#{date.month}/#{date.day}/#{date.year} at #{hour}:#{minutes} #{am_or_pm}"
   end
 
+  def fetch_event(conn, _args) do
+    id = conn.params["id"]
+    event = Events.get_event!(id)
+    assign(conn, :event, event)
+  end
+
+  def require_owner(conn, _args) do
+    current_user = conn.assigns[:current_user]
+    event = conn.assigns[:event]
+    if current_user.id == event.user_id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You do not own this.")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
+    end
+  end
+
   def index(conn, _params) do
     events = Events.list_events()
-    |> Enum.map(fn event ->
-        Map.put(event, :date_string, date_string(event))
-      end)
+    |> Enum.map(fn all -> Map.update!(all, :date, &(date_string(&1))) end)
     render(conn, "index.html", events: events)
   end
 
@@ -26,11 +51,7 @@ defmodule EventAppWeb.EventController do
   end
 
   def create(conn, %{"event" => event_params}) do
-    id = if conn.assigns[:current_user] do
-      conn.assigns[:current_user].id 
-    else
-      nil
-    end
+    id = conn.assigns[:current_user].id 
 
     event_params = event_params
     |> Map.put("user_id", id)
@@ -46,19 +67,19 @@ defmodule EventAppWeb.EventController do
   end
 
   def show(conn, %{"id" => id}) do
-    event = Events.get_event!(id)
-    |> (fn event -> Map.put(event, :date_string, date_string(event)) end).()
+    event = conn.assigns[:event]
+    |> Map.update!(:date, &(date_string(&1)))
     render(conn, "show.html", event: event)
   end
 
   def edit(conn, %{"id" => id}) do
-    event = Events.get_event!(id)
+    event = conn.assigns[:event]
     changeset = Events.change_event(event)
     render(conn, "edit.html", event: event, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "event" => event_params}) do
-    event = Events.get_event!(id)
+    event = conn.assigns[:event]
 
     case Events.update_event(event, event_params) do
       {:ok, event} ->
@@ -72,7 +93,7 @@ defmodule EventAppWeb.EventController do
   end
 
   def delete(conn, %{"id" => id}) do
-    event = Events.get_event!(id)
+    event = conn.assigns[:event]
     {:ok, _event} = Events.delete_event(event)
 
     conn

@@ -4,7 +4,7 @@
 <div>
   <h2><%= @event.name %></h2>
   <h4>
-    <small><%= @event.date_string %></small>
+    <small><%= @event.date %></small>
   </h4>
   <%= if @event.user do %>
     <div>
