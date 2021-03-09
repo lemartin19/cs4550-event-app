@@ -15,6 +15,6 @@ defmodule EventAppWeb.Helpers do
   end
 
   def current_user_is?(conn, user_id) do
-    conn.assigns[:current_user].id == user_id
+    current_user_id(conn) == user_id
   end
 end
