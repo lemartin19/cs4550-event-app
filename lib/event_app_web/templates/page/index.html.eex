@@ -4,11 +4,13 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col mb-2">
-    <%= link "New Event", to: Routes.event_path(@conn, :new) %>
+<%= if have_current_user?(@conn) do %>
+  <div class="row">
+    <div class="col mb-2">
+      <%= link "New Event", to: Routes.event_path(@conn, :new) %>
+    </div>
   </div>
-</div>
+<% end %>
 
 <div class="d-flex flex-wrap">
   <%= for event <- @events do %>
