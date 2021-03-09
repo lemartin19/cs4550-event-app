@@ -4,16 +4,6 @@ defmodule EventAppWeb.InviteController do
   alias EventApp.Invites
   alias EventApp.Invites.Invite
 
-  def index(conn, _params) do
-    invites = Invites.list_invites()
-    render(conn, "index.html", invites: invites)
-  end
-
-  def new(conn, _params) do
-    changeset = Invites.change_invite(%Invite{})
-    render(conn, "new.html", changeset: changeset)
-  end
-
   def create(conn, %{"invite" => invite_params}) do
     case Invites.create_invite(invite_params) do
       {:ok, invite} ->
