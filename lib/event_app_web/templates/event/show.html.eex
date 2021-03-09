@@ -12,9 +12,17 @@
 <% end %>
 <span><%= link "Back", to: Routes.event_path(@conn, :index) %></span>
 
-<div class="mt-4">
+<div class="my-4">
   <%= if current_user_is?(@conn, @event.user) do %>
     <%= render EventAppWeb.InviteView, "new.html",
     default_invite_changeset(assigns) %>
   <% end %>
+  <%= if current_user_invitation(@conn, @invite_join) do %>
+    <%= render EventAppWeb.InviteView, "response.html",
+    Map.put(assigns, :invite, current_user_invitation(@conn, @invite_join)) %>
+  <% end %>
+</div>
+
+<div>
+  <%= render EventAppWeb.InviteView, "index.html", assigns %>
 </div>

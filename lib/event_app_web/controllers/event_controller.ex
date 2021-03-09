@@ -2,6 +2,7 @@ defmodule EventAppWeb.EventController do
   use EventAppWeb, :controller
 
   alias EventApp.Events
+  alias EventApp.Invites
   alias EventApp.Events.Event
 
   alias EventAppWeb.Plugs
@@ -49,7 +50,9 @@ defmodule EventAppWeb.EventController do
   def show(conn, %{"id" => id}) do
     event = conn.assigns[:event]
     |> Map.update!(:date, &(date_string(&1)))
-    render(conn, "show.html", event: event)
+    invites = Invites.list_invites(event.id)
+    invite_join = Invites.join_invites(event.id)
+    render(conn, "show.html", event: event, invites: invites, invite_join: invite_join)
   end
 
   def edit(conn, %{"id" => id}) do

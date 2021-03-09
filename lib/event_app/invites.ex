@@ -7,6 +7,7 @@ defmodule EventApp.Invites do
   alias EventApp.Repo
 
   alias EventApp.Invites.Invite
+  alias EventApp.Users.User
 
   @doc """
   Returns the list of invites.
@@ -17,8 +18,26 @@ defmodule EventApp.Invites do
       [%Invite{}, ...]
 
   """
-  def list_invites do
-    Repo.all(Invite)
+  def list_invites(event_id) do
+    invite_query = from i in Invite,
+      where: i.event_id == ^event_id
+
+    Repo.all(invite_query)
+  end
+
+  def join_invites(event_id) do
+    join_query = from i in Invite,
+      left_join: u in User,
+      on: u.email == i.user_email,
+      where: i.event_id == ^event_id,
+      select: {i.user_email, i.event_id, u.id}
+
+    Repo.all(join_query)
+    |> Enum.map(fn {invitee_email, event_id, user_id} -> %{
+      "invitee_email" => invitee_email,
+      "event_id" => event_id,
+      "user_id" => user_id,
+    } end)
   end
 
   @doc """

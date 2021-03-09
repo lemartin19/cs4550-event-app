@@ -1,0 +1,29 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Invitee email</th>
+      <th>Response</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for invite <- @invites do %>
+    <tr>
+      <td><%= invite.user_email %></td>
+      <td>
+        <%= if invite.response do %>
+          <%= invite.response %>
+        <% else %>
+          <i>No response</i>
+        <% end %>
+      </td>
+
+      <td>
+        <%= if current_user_is?(@conn, @event.user_id) do %>
+          <span><%= link "Uninvite", to: Routes.invite_path(@conn, :delete, invite), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <% end %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
