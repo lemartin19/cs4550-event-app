@@ -15,7 +15,6 @@ defmodule EventApp.Events.Event do
   def changeset(event, attrs) do
     event
     |> cast(attrs, [:name, :date, :description, :user_id])
-    |> validate_required([:name, :date, :description])
-    # TODO: when adding the user id back in, make it required here
+    |> validate_required([:name, :date, :description, :user_id])
   end
 end

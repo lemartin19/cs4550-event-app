@@ -5,7 +5,8 @@ defmodule EventApp.Invites.Invite do
   schema "invites" do
     field :response, :string
     field :event_id, :id
-    field :user_id, :id
+    field :user_email, :string
+    belongs_to :event, EventApp.Events.Event
 
     timestamps()
   end
@@ -13,7 +14,8 @@ defmodule EventApp.Invites.Invite do
   @doc false
   def changeset(invite, attrs) do
     invite
-    |> cast(attrs, [:response])
-    |> validate_required([:response])
+    |> cast(attrs, [:response, :user_email])
+    |> validate_required([:response, :user_email])
+    |> unique_constraint(:invitee_email, name: :invitee_email)
   end
 end
