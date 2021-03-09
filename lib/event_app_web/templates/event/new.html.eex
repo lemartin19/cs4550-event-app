@@ -1,3 +1,4 @@
 <h1>Make a new event</h1>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.event_path(@conn, :create)) %>
+<%= render "form.html",
+Map.put(assigns, :action, Routes.event_path(@conn, :create)) %>

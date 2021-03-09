@@ -4,6 +4,9 @@ defmodule EventAppWeb.InviteController do
   alias EventApp.Invites
   alias EventApp.Invites.Invite
 
+  alias EventAppWeb.Plugs
+  plug Plugs.FetchEvent when action in [:create]
+
   def create(conn, %{"invite" => invite_params}) do
     case Invites.create_invite(invite_params) do
       {:ok, invite} ->
@@ -12,7 +15,7 @@ defmodule EventAppWeb.InviteController do
         |> redirect(to: Routes.invite_path(conn, :show, invite))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(EventAppWeb.EventView, "edit.html", invite_changeset: changeset)
     end
   end
 

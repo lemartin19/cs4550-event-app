@@ -1,5 +1,7 @@
 defmodule EventAppWeb.Helpers do
   alias EventApp.Users.User
+  alias EventApp.Invites.Invite
+  alias EventApp.Invites
 
   def current_user_id(conn) do
     user = conn.assigns[:current_user]
@@ -16,5 +18,13 @@ defmodule EventAppWeb.Helpers do
 
   def current_user_is?(conn, user_id) do
     current_user_id(conn) == user_id
+  end
+
+  def default_invite_changeset(assigns) do
+    Map.update(
+      assigns,
+      :invite_changeset,
+      Invites.change_invite(%Invite{}), &(&1)
+    )
   end
 end

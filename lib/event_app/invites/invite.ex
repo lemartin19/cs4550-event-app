@@ -4,7 +4,6 @@ defmodule EventApp.Invites.Invite do
 
   schema "invites" do
     field :response, :string
-    field :event_id, :id
     field :user_email, :string
     belongs_to :event, EventApp.Events.Event
 

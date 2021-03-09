@@ -7,6 +7,7 @@ defmodule EventApp.Events.Event do
     field :description, :string
     field :name, :string
     belongs_to :user, EventApp.Users.User
+    has_many :invites, EventApp.Invites.Invite
 
     timestamps()
   end
