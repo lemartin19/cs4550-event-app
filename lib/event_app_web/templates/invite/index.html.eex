@@ -20,7 +20,7 @@
 
       <td>
         <%= if current_user_is?(@conn, @event.user_id) do %>
-          <span><%= link "Uninvite", to: Routes.invite_path(@conn, :delete, invite), method: :delete, data: [confirm: "Are you sure?"] %></span>
+          <span><%= link "Uninvite", to: Routes.invite_path(@conn, :delete, invite, event_id: @event.id), method: :delete, data: [confirm: "Are you sure?"] %></span>
         <% end %>
       </td>
     </tr>

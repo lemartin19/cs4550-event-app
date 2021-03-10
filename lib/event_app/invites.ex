@@ -20,8 +20,6 @@ defmodule EventApp.Invites do
 
   """
   def list_invites(event_id) do
-    IO.inspect(%Invite{})
-
     invite_query = from i in Invite,
       where: i.event_id == ^event_id
 
@@ -48,9 +46,9 @@ defmodule EventApp.Invites do
   """
   def get_invite!(id) do
     Repo.get!(Invite, id)
-    |> Enum.map(fn invite ->
-      Map.put(invite, :user, User.get_user_by_email(invite.user_email))
-    end)
+    |> (fn invite ->
+      Map.put(invite, :user, Users.get_user_by_email(invite.user_email))
+    end).()
     |> Repo.preload(:event)
   end
 

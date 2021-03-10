@@ -1,14 +1,17 @@
-<%= form_for @changeset, @action, fn f -> %>
-  <%= if @changeset.action do %>
+<%= form_for @invite_changeset,
+Routes.invite_path(@conn, :update, @invite, event_id: @event.id),
+[method: "put"],
+fn f -> %>
+  <%= if @invite_changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
 
-  <div class="d-inline mr-2">
-    <b>Response:</b>
-  </div>
-  <div class="d-inline-flex flex-direction-column">
+  <div class="d-inline-flex flex-direction-column align-items-center">
+    <div class="d-inline mr-3 mb-3">
+      <b>Response:</b>
+    </div>
     <div class="mr-4">
       <%= label do %>
         <%= radio_button f, :response, "yes" %>
@@ -27,11 +30,10 @@
         No
       <% end %>
     </div>
-  </div>
-  <%= error_tag f, :response %>
+    <%= error_tag f, :response %>
 
-  <div class="mt-2">
-    <%= submit "Save", class: "btn btn-primary mr-2" %>
-    <span><%= link "Back", to: Routes.invite_path(@conn, :index) %></span>
+    <div class="mb-2">
+      <%= submit "Save", class: "btn btn-primary mr-2" %>
+    </div>
   </div>
 <% end %>

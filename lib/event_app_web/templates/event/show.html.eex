@@ -13,13 +13,17 @@
 <span><%= link "Back", to: Routes.event_path(@conn, :index) %></span>
 
 <div class="my-4">
+  <%= if current_user_invitation(@conn, @invites) do %>
+    <%= render EventAppWeb.InviteView, "response.html",
+    Map.put(invite_changeset_or_default(assigns), :invite,
+    current_user_invitation(@conn, @invites)) %>
+  <% end %>
+</div>
+
+<div class="my-4">
   <%= if current_user_is?(@conn, @event.user) do %>
     <%= render EventAppWeb.InviteView, "new.html",
-    default_invite_changeset(assigns) %>
-  <% end %>
-  <%= if current_user_invitation(@conn, @invite_join) do %>
-    <%= render EventAppWeb.InviteView, "response.html",
-    Map.put(assigns, :invite, current_user_invitation(@conn, @invite_join)) %>
+    invite_changeset_or_default(assigns) %>
   <% end %>
 </div>
 

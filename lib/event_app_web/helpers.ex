@@ -22,11 +22,10 @@ defmodule EventAppWeb.Helpers do
 
   def current_user_invitation(conn, invites) do
     invites
-    |> Enum.map(fn invites -> invites["user_id"] end)
-    |> Enum.find(nil, &current_user_is?(conn, &1))
+    |> Enum.find(nil, &current_user_is?(conn, &1.user))
   end
 
-  def default_invite_changeset(assigns) do
+  def invite_changeset_or_default(assigns) do
     Map.update(
       assigns,
       :invite_changeset,

@@ -21,7 +21,7 @@ defmodule EventAppWeb.Router do
     resources "/events", EventController
     resources "/users", UserController, except: [:index]
     resources "/invites", InviteController,
-      only: [:create, :delete, :show]
+      only: [:show, :create, :delete, :update]
     resources "/sessions", SessionController,
       only: [:create, :delete], singleton: true
   end

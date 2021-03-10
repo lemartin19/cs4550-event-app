@@ -47,15 +47,14 @@ defmodule EventAppWeb.EventController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, _params) do
     event = conn.assigns[:event]
     |> Map.update!(:date, &(date_string(&1)))
     invites = Invites.list_invites(event.id)
-    invite_join = Invites.join_invites(event.id)
-    render(conn, "show.html", event: event, invites: invites, invite_join: invite_join)
+    render(conn, "show.html", event: event, invites: invites)
   end
 
-  def edit(conn, %{"id" => id}) do
+  def edit(conn, _params) do
     event = conn.assigns[:event]
     changeset = Events.change_event(event)
     render(conn, "edit.html", event: event, changeset: changeset)
