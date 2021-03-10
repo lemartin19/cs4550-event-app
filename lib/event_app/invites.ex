@@ -7,6 +7,7 @@ defmodule EventApp.Invites do
   alias EventApp.Repo
 
   alias EventApp.Invites.Invite
+  alias EventApp.Users
   alias EventApp.Users.User
 
   @doc """
@@ -19,25 +20,16 @@ defmodule EventApp.Invites do
 
   """
   def list_invites(event_id) do
+    IO.inspect(%Invite{})
+
     invite_query = from i in Invite,
       where: i.event_id == ^event_id
 
     Repo.all(invite_query)
-  end
-
-  def join_invites(event_id) do
-    join_query = from i in Invite,
-      left_join: u in User,
-      on: u.email == i.user_email,
-      where: i.event_id == ^event_id,
-      select: {i.user_email, i.event_id, u.id}
-
-    Repo.all(join_query)
-    |> Enum.map(fn {invitee_email, event_id, user_id} -> %{
-      "invitee_email" => invitee_email,
-      "event_id" => event_id,
-      "user_id" => user_id,
-    } end)
+    |> Enum.map(fn invite ->
+      Map.put(invite, :user, Users.get_user_by_email(invite.user_email))
+    end)
+    |> Repo.preload(:event)
   end
 
   @doc """
@@ -54,7 +46,13 @@ defmodule EventApp.Invites do
       ** (Ecto.NoResultsError)
 
   """
-  def get_invite!(id), do: Repo.get!(Invite, id)
+  def get_invite!(id) do
+    Repo.get!(Invite, id)
+    |> Enum.map(fn invite ->
+      Map.put(invite, :user, User.get_user_by_email(invite.user_email))
+    end)
+    |> Repo.preload(:event)
+  end
 
   @doc """
   Creates a invite.

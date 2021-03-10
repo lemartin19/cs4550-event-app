@@ -3,8 +3,8 @@ defmodule EventApp.Invites.Invite do
   import Ecto.Changeset
 
   schema "invites" do
+    field :user_email, :string, null: false
     field :response, :string
-    field :user_email, :string
     belongs_to :event, EventApp.Events.Event
 
     timestamps()
