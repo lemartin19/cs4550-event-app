@@ -2,6 +2,7 @@ defmodule EventAppWeb.UserController do
   use EventAppWeb, :controller
 
   alias EventApp.Users
+  alias EventApp.Avatars
   alias EventApp.Users.User
   alias EventAppWeb.SessionController
 
@@ -9,7 +10,7 @@ defmodule EventAppWeb.UserController do
   plug Plugs.RequireUser when action not in [
     :new, :create, :show]
   plug :fetch_user when action in [
-    :show, :edit, :update, :delete]
+    :show, :edit, :update, :delete, :photo]
   plug :require_owner when action in [
     :edit, :update, :delete]
 
@@ -32,12 +33,24 @@ defmodule EventAppWeb.UserController do
     end
   end
 
+  def get_avatar_hash(params) do
+    if Map.has_key?(params, "avatar") do
+      up = params["avatar"]
+      {:ok, hash} = Avatars.save_photo(up.filename, up.path)
+      Map.put(params, "avatar_hash", hash)
+    else
+      params
+    end
+  end
+
   def new(conn, _params) do
     changeset = Users.change_user(%User{})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"user" => user_params}) do
+    user_params = get_avatar_hash(user_params)
+
     case Users.create_user(user_params) do
       {:ok, user} ->
         conn
@@ -61,7 +74,11 @@ defmodule EventAppWeb.UserController do
   end
 
   def update(conn, %{"user" => user_params}) do
+    user_params = get_avatar_hash(user_params)
     user = conn.assigns[:user]
+    if user_params["avatar_hash"] do
+      Avatars.delete_photo(user.avatar_hash)
+    end
 
     case Users.update_user(user, user_params) do
       {:ok, user} ->
@@ -76,10 +93,19 @@ defmodule EventAppWeb.UserController do
 
   def delete(conn, _params) do
     user = conn.assigns[:user]
+    Avatars.delete_photo(user["avatar_hash"])
     {:ok, _user} = Users.delete_user(user)
 
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> SessionController.delete(%{})
+  end
+
+  def photo(conn, _params) do
+    user = conn.assigns[:user]
+    {:ok, _name, data} = Avatars.load_photo(user.avatar_hash)
+    conn
+    |> put_resp_content_type("image/jpeg")
+    |> send_resp(200, data)
   end
 end

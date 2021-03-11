@@ -2,8 +2,11 @@
   <%= @user.name %>
 </h1>
 
-<div>
-  <div class="my-3">
+<div class="my-3">
+  <div>
+    <img src="<%= Routes.user_path(@conn, :photo, @user) %>" alt="<%= @user.name %>'s avatar photo">
+  </div>
+  <div> 
     <strong>Email:</strong>
     <%= @user.email %>
   </div>

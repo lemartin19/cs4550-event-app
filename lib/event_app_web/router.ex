@@ -18,6 +18,7 @@ defmodule EventAppWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/users/photo/:id", UserController, :photo
     resources "/events", EventController
     resources "/users", UserController, except: [:index]
     resources "/invites", InviteController,

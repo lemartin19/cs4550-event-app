@@ -8,7 +8,6 @@ defmodule EventApp.Invites do
 
   alias EventApp.Invites.Invite
   alias EventApp.Users
-  alias EventApp.Users.User
 
   @doc """
   Returns the list of invites.
