@@ -17,8 +17,10 @@
     <%= for event <- @events do %>
       <div class="col-sm-4 p-2">
         <div class="card h-100">
-          <div class="card-img-top">
-            <img src="<%= Routes.user_path(@conn, :photo, event.user) %>" alt="host's avatar photo" class="w-100">
+          <div class="card-img-top bg-secondary text-white">
+            <div class="text-center d-flex align-items-center min-h-50">
+              <img src="<%= Routes.user_path(@conn, :photo, event.user) %>" alt="host avatar" class="w-100">
+            </div>
           </div>
           <div class="card-header">
             <%= event.name %>
