@@ -49,18 +49,18 @@ defmodule EventAppWeb.UserController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, _params) do
     user = conn.assigns[:user]
     render(conn, "show.html", user: user)
   end
 
-  def edit(conn, %{"id" => id}) do
+  def edit(conn, _params) do
     user = conn.assigns[:user]
     changeset = Users.change_user(user)
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
+  def update(conn, %{"user" => user_params}) do
     user = conn.assigns[:user]
 
     case Users.update_user(user, user_params) do
@@ -74,7 +74,7 @@ defmodule EventAppWeb.UserController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, _params) do
     user = conn.assigns[:user]
     {:ok, _user} = Users.delete_user(user)
 

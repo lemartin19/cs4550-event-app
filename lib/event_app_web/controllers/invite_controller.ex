@@ -3,8 +3,6 @@ defmodule EventAppWeb.InviteController do
 
   alias EventApp.Events
   alias EventApp.Invites
-  alias EventApp.Invites.Invite
-  import EventAppWeb.EventView
 
   alias EventAppWeb.Plugs
   plug Plugs.RequireUser
@@ -38,7 +36,7 @@ defmodule EventAppWeb.InviteController do
     |> Map.put("event_id", event.id)
 
     case Invites.create_invite(invite_params) do
-      {:ok, invite} ->
+      {:ok, _} ->
         conn
         |> put_flash(:info, "Invite created successfully.")
         |> redirect(to: Routes.event_path(conn, :show, event))
@@ -61,7 +59,7 @@ defmodule EventAppWeb.InviteController do
     event = conn.assigns[:event]
 
     case Invites.update_invite(invite, invite_params) do
-      {:ok, invite} ->
+      {:ok, _} ->
         conn
         |> put_flash(:info, "Invite updated successfully.")
         |> redirect(to: Routes.event_path(conn, :show, event))

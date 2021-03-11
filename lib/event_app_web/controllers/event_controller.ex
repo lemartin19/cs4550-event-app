@@ -60,7 +60,7 @@ defmodule EventAppWeb.EventController do
     render(conn, "edit.html", event: event, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "event" => event_params}) do
+  def update(conn, %{"event" => event_params}) do
     event = conn.assigns[:event]
 
     case Events.update_event(event, event_params) do
@@ -74,7 +74,7 @@ defmodule EventAppWeb.EventController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, _params) do
     event = conn.assigns[:event]
     {:ok, _event} = Events.delete_event(event)
 
