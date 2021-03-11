@@ -1,12 +1,12 @@
 defmodule EventAppWeb.Plugs.RequireOwner do
   use EventAppWeb, :controller
 
+  alias EventAppWeb.Helpers
+
   def init(args), do: args
 
   def call(conn, _args) do
-    current_user = conn.assigns[:current_user]
-    event = conn.assigns[:event]
-    if current_user.id == event.user_id do
+    if Helpers.current_user_is_owner?(conn) do
       conn
     else
       conn

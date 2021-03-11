@@ -33,6 +33,8 @@ defmodule EventApp.Avatars do
     end
   end
 
+  def load_photo(nil), do: {:ok, nil, nil}
+
   def load_photo(hash) do
     data = File.read!(data_path(hash))
     meta = File.read!(meta_path(hash))

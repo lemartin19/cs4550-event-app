@@ -4,6 +4,7 @@ defmodule EventAppWeb.InviteController do
   alias EventApp.Events
   alias EventApp.Invites
 
+  alias EventAppWeb.Helpers
   alias EventAppWeb.Plugs
   plug Plugs.RequireUser
   plug :fetch_event when action in [
@@ -18,13 +19,11 @@ defmodule EventAppWeb.InviteController do
   end
 
   def require_invitee(conn, _args) do
-    current_user = conn.assigns[:current_user]
-    event = conn.assigns[:event]
-    if current_user.id == event.user_id do
+    if Helpers.is_user_invited?(conn) do
       conn
     else
       conn
-      |> put_flash(:error, "You do not own this.")
+      |> put_flash(:error, "User does not have an invite to this event.")
       |> redirect(to: Routes.page_path(conn, :index))
       |> halt()
     end
