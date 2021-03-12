@@ -7,7 +7,7 @@ defmodule EventAppWeb.CommentController do
   alias EventAppWeb.Helpers
   alias EventAppWeb.Plugs
   plug Plugs.RequireUser
-  plug Plugs.FetchEvent
+  plug Plugs.FetchEvent when :action not in [:delete]
   plug :require_invitee_or_owner
   plug :require_comment_or_event_owner when :action in [:delete]
 
@@ -50,8 +50,6 @@ defmodule EventAppWeb.CommentController do
     |> Map.put("user_id", user.id)
     |> Map.put("event_id", event.id)
 
-    IO.inspect(%{"here" => "comment_params"})
-    IO.inspect(comment_params)
     case Comments.create_comment(comment_params) do
       {:ok, _comment} ->
         conn
@@ -69,11 +67,10 @@ defmodule EventAppWeb.CommentController do
 
   def delete(conn, %{"id" => id}) do
     comment = Comments.get_comment!(id)
-    {:ok, _comment} = Comments.delete_comment(comment)
-    event = conn.assigns[:event]
+    {:ok, _} = Comments.delete_comment(comment)
 
     conn
     |> put_flash(:info, "Comment deleted successfully.")
-    |> redirect(to: Routes.event_path(conn, :show, event))
+    |> redirect(to: Routes.event_path(conn, :show, comment.event))
   end
 end
