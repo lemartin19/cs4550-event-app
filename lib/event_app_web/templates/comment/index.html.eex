@@ -1,9 +1,9 @@
 <%= for comment <- @comments do %>
-  <div class="card my-2">
+  <div class="card my-2 d-flex flex-row">
+    <div class="comment-avatar">
+      <img src="<%= Routes.user_path(@conn, :photo, comment.user) %>" alt="<%= comment.user.name %>'s avatar" class="h-100">
+    </div>
     <div class="card-body d-flex align-items-start">
-      <div>
-        <img src="<%= Routes.user_path(@conn, :photo, comment.user) %>" alt="@comment.user.name avatar" class="comment-avatar">
-      </div>
       <div>
         <p><%= comment.body %></p>
         <div>
