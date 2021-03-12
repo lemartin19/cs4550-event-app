@@ -75,4 +75,8 @@ defmodule EventAppWeb.Helpers do
   def is_user_invited_or_owns?(conn, event) do
     is_user_invited?(conn, event) || current_user_is_owner?(conn, event)
   end
+
+  def count_responses(invites, response) do
+    Enum.count(invites, fn invite -> invite.response == response end)
+  end
 end

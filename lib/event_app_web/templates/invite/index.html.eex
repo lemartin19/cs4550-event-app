@@ -1,3 +1,10 @@
+<div class="font-italic mb-2">
+  <%= count_responses(@invites, "yes") %> yes,
+  <%= count_responses(@invites, "maybe") %> maybe,
+  <%= count_responses(@invites, "no") %> no,
+  <%= count_responses(@invites, nil) %> without response
+</div>
+
 <table class="table table-striped">
   <thead>
     <tr>

@@ -62,7 +62,7 @@ defmodule EventAppWeb.InviteController do
     case Invites.update_invite(invite, invite_params) do
       {:ok, _} ->
         conn
-        |> put_flash(:info, "Invite updated successfully.")
+        |> put_flash(:info, "Responded: #{invite_params["response"]}")
         |> redirect(to: Routes.event_path(conn, :show, event))
 
       {:error, %Ecto.Changeset{} = changeset} ->

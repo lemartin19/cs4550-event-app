@@ -55,6 +55,7 @@ defmodule EventAppWeb.UserController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "#{user.name} successfully added as a user.")
+        |> SessionController.create(%{"email" => user.email})
         |> redirect(to: Routes.page_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
