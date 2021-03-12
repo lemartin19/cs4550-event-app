@@ -21,7 +21,7 @@ defmodule EventAppWeb.SessionController do
     else
       conn
       |> put_flash(:error, "Login failed.")
-      |> redirect(to: conn.request_path)
+      |> redirect(to: Routes.page_path(conn, :index, redirect_to: redirect_path))
     end
   end
 
