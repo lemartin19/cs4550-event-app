@@ -9,7 +9,7 @@ defmodule EventAppWeb.Plugs.RequireUser do
     else
       conn
       |> put_flash(:error, "You must be logged in to do that.")
-      |> redirect(to: Routes.page_path(conn, :index))
+      |> redirect(to: Routes.user_path(conn, :new))
       |> halt()
     end
   end

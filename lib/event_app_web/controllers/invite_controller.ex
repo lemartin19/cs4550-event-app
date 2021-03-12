@@ -24,7 +24,7 @@ defmodule EventAppWeb.InviteController do
       conn
     else
       conn
-      |> put_flash(:error, "User does not have an invite to this event.")
+      |> put_flash(:error, "You do not have an invite to this event.")
       |> redirect(to: Routes.page_path(conn, :index))
       |> halt()
     end
