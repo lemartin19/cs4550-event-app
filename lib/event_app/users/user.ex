@@ -16,7 +16,7 @@ defmodule EventApp.Users.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:name, :email, :avatar_hash])
-    |> validate_required([:name, :email])
+    |> validate_required([:name, :email, :avatar_hash])
     |> unique_constraint(:email)
   end
 end

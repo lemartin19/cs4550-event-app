@@ -5,8 +5,11 @@ defmodule EventAppWeb.SessionController do
   # on 2/23 Photoblog
 
   def create(conn, %{"email" => email}) do
-    IO.inspect(conn.params)
-    redirect_path = conn.params["redirect_to"] || Routes.page_path(conn, :index)
+    redirect_path = if conn.params["redirect_to"] != "" do
+      conn.params["redirect_to"]
+    else
+      Routes.page_path(conn, :index)
+    end
     user = EventApp.Users.get_user_by_email(email)
 
     if user do

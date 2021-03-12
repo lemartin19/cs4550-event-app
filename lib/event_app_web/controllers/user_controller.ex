@@ -34,13 +34,18 @@ defmodule EventAppWeb.UserController do
   end
 
   def get_avatar_hash(params) do
-    if Map.has_key?(params, "avatar") do
-      up = params["avatar"]
-      {:ok, hash} = Avatars.save_photo(up.filename, up.path)
-      Map.put(params, "avatar_hash", hash)
+    up = if Map.has_key?(params, "avatar") do
+      params["avatar"]
     else
-      params
+      %{
+        content_type: "image/jpeg",
+        filename: "default_avatar.png",
+        path: Application.app_dir(:event_app, "priv/photos/default-avatar.png")
+       }
     end
+
+    {:ok, hash} = Avatars.save_photo(up.filename, up.path)
+    Map.put(params, "avatar_hash", hash)
   end
 
   def new(conn, _params) do
