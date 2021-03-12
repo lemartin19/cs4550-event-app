@@ -3,6 +3,7 @@ defmodule EventAppWeb.EventController do
 
   alias EventApp.Events
   alias EventApp.Invites
+  alias EventApp.Comments
   alias EventApp.Events.Event
 
   alias EventAppWeb.Helpers
@@ -76,7 +77,8 @@ defmodule EventAppWeb.EventController do
     event = conn.assigns[:event]
     |> Map.update!(:date, &(date_string(&1)))
     invites = Invites.list_invites(event.id)
-    render(conn, "show.html", event: event, invites: invites)
+    comments = Comments.list_comments(event.id)
+    render(conn, "show.html", event: event, invites: invites, comments: comments)
   end
 
   def edit(conn, _params) do

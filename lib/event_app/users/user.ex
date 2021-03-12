@@ -7,6 +7,7 @@ defmodule EventApp.Users.User do
     field :name, :string
     field :avatar_hash, :string
     has_many :events, EventApp.Events.Event
+    has_many :comments, EventApp.Events.Event
 
     timestamps()
   end

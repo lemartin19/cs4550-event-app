@@ -42,3 +42,8 @@
   <h3>Attendee responses</h3>
   <%= render EventAppWeb.InviteView, "index.html", assigns %>
 </div>
+
+<div>
+  <h3>Comments</h3>
+  <%= render EventAppWeb.CommentView, "index.html", assigns %>
+</div>

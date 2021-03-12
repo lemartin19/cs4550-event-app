@@ -4,7 +4,7 @@
 
 <div class="my-3">
   <div>
-    <img src="<%= Routes.user_path(@conn, :photo, @user) %>" alt="<%= @user.name %>'s avatar photo">
+    <img src="<%= Routes.user_path(@conn, :photo, @user) %>" alt="<%= @user.name %>'s avatar photo" class="user-avatar">
   </div>
   <div> 
     <strong>Email:</strong>

@@ -3,6 +3,7 @@ defmodule EventAppWeb.InviteController do
 
   alias EventApp.Events
   alias EventApp.Invites
+  alias EventApp.Comments
 
   alias EventAppWeb.Helpers
   alias EventAppWeb.Plugs
@@ -42,9 +43,10 @@ defmodule EventAppWeb.InviteController do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         invites = Invites.list_invites(event.id)
+        comments = Comments.list_comments(event.id)
         conn
         |> put_view(EventAppWeb.EventView)
-        |> render(:show, event: event, invites: invites, invite_changeset: changeset)
+        |> render(:show, event: event, invites: invites, comments: comments, invite_changeset: changeset)
     end
   end
 

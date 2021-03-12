@@ -1,6 +1,8 @@
 defmodule EventAppWeb.Helpers do
   alias EventApp.Invites
   alias EventApp.Invites.Invite
+  alias EventApp.Comments
+  alias EventApp.Comments.Comment
   alias EventApp.Users.User
 
   def current_user_id(conn) do
@@ -29,7 +31,17 @@ defmodule EventAppWeb.Helpers do
     Map.update(
       assigns,
       :invite_changeset,
-      Invites.change_invite(%Invite{}), &(&1)
+      Invites.change_invite(%Invite{}),
+      &(&1)
+    )
+  end
+
+  def comment_changeset_or_default(assigns) do
+    Map.update(
+      assigns,
+      :comment_changeset,
+      Comments.change_comment(%Comment{}),
+      &(&1)
     )
   end
 
