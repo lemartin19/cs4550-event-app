@@ -65,6 +65,10 @@ defmodule EventAppWeb.CommentController do
     end
   end
 
+  def update(conn, args) do
+    delete(conn, args)
+  end
+
   def delete(conn, %{"id" => id}) do
     comment = Comments.get_comment!(id)
     {:ok, _} = Comments.delete_comment(comment)

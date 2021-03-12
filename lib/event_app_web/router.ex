@@ -24,7 +24,7 @@ defmodule EventAppWeb.Router do
     resources "/invites", InviteController,
       only: [:show, :create, :delete, :update]
     resources "/comments", CommentController,
-      except: [:update, :edit]
+      except: [:edit]
     resources "/sessions", SessionController,
       only: [:create, :delete], singleton: true
   end
