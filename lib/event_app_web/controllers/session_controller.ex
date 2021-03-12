@@ -5,7 +5,8 @@ defmodule EventAppWeb.SessionController do
   # on 2/23 Photoblog
 
   def create(conn, %{"email" => email}) do
-    redirect_path = if conn.params["redirect_to"] != "" do
+    redirect_path = if conn.params["redirect_to"]
+        && conn.params["redirect_to"] != "" do
       conn.params["redirect_to"]
     else
       Routes.page_path(conn, :index)
@@ -20,7 +21,7 @@ defmodule EventAppWeb.SessionController do
     else
       conn
       |> put_flash(:error, "Login failed.")
-      |> redirect(to: Routes.page_path(conn, :index, redirect_to: redirect_path))
+      |> redirect(to: conn.request_path)
     end
   end
 

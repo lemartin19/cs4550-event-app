@@ -57,11 +57,18 @@ defmodule EventAppWeb.UserController do
 
   def create(conn, %{"user" => user_params}) do
     user_params = get_avatar_hash(user_params)
+    redirect_path = if conn.params["redirect_to"]
+        && conn.params["redirect_to"] != "" do
+      conn.params["redirect_to"]
+    else
+      Routes.page_path(conn, :index)
+    end
     case Users.create_user(user_params) do
       {:ok, user} ->
         conn
         |> put_flash(:info, "#{user.name} successfully added as a user.")
         |> SessionController.create(%{"email" => user.email})
+        |> redirect(to: redirect_path)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
