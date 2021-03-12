@@ -37,7 +37,7 @@
         <% else %>
           <div class="d-flex flex-column align-items-end">
             <div class="mb-2">
-              <%= form_for @conn, Routes.session_path(@conn, :create),
+              <%= form_for @conn, Routes.session_path(@conn, :create, redirect_to: @conn.params["redirect_to"]),
               [class: "form-inline"], fn f -> %>
                 <%= email_input f, :email, class: "form-control" %>
                 <%= submit "Login", class: "btn btn-secondary ml-2" %>
