@@ -9,6 +9,7 @@
 
 <%= if current_user_is_owner?(@conn, @event) do %>
   <span class="mr-2"><%= link "Edit", to: Routes.event_path(@conn, :edit, @event) %></span>
+  <span><%= link "Delete", to: Routes.event_path(@conn, :delete, @event), method: :delete, data: [confirm: "Are you sure?"] %></span>
 <% end %>
 <span><%= link "Back", to: Routes.event_path(@conn, :index) %></span>
 
