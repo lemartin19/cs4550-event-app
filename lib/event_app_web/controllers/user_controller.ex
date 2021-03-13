@@ -105,7 +105,7 @@ defmodule EventAppWeb.UserController do
 
   def delete(conn, _params) do
     user = conn.assigns[:user]
-    Avatars.delete_photo(user["avatar_hash"])
+    Avatars.delete_photo(user.avatar_hash)
     {:ok, _user} = Users.delete_user(user)
 
     conn
