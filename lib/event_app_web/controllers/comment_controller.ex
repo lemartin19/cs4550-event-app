@@ -3,13 +3,21 @@ defmodule EventAppWeb.CommentController do
 
   alias EventApp.Comments
   alias EventApp.Invites
+  alias EventApp.Events
 
   alias EventAppWeb.Helpers
   alias EventAppWeb.Plugs
   plug Plugs.RequireUser
-  plug Plugs.FetchEvent when :action not in [:delete]
+  plug :fetch_event_for_delete when action in [:delete]
+  plug Plugs.FetchEvent when not action in [:delete]
   plug :require_invitee_or_owner
-  plug :require_comment_or_event_owner when :action in [:delete]
+  plug :require_comment_or_event_owner when action in [:delete]
+
+  def fetch_event_for_delete(conn, _params) do
+    id = conn.params["id"]
+    comment = Comments.get_comment!(id)
+    assign(conn, :event, comment.event)
+  end
 
   def require_invitee_or_owner(conn, _args) do
     if Helpers.is_user_invited_or_owns?(conn) do
@@ -22,10 +30,11 @@ defmodule EventAppWeb.CommentController do
     end
   end
 
-  def require_comment_or_event_owner(conn, %{"id" => id}) do
-    owns_comment? = Comments.get_comment!(id)
-    |> (fn comment -> Helpers.current_user_is?(conn, comment) end).()
-    event = conn.assigns[:event]
+  def require_comment_or_event_owner(conn, _args) do
+    id = conn.params["id"]
+    comment = Comments.get_comment!(id)
+    owns_comment? = Helpers.current_user_is?(conn, comment)
+    event = comment.event
     owns_event? = Helpers.current_user_is?(conn, event.user_id)
     if owns_comment? || owns_event? do
       conn
@@ -35,12 +44,6 @@ defmodule EventAppWeb.CommentController do
       |> redirect(to: Routes.event_path(conn, :show, event))
       |> halt()
     end
-  end
-
-  def index(conn, _params) do
-    event = conn.assigns[:event]
-    comments = Comments.list_comments(event)
-    render(conn, "index.html", comments: comments)
   end
 
   def create(conn, %{"comment" => comment_params}) do
@@ -63,10 +66,6 @@ defmodule EventAppWeb.CommentController do
         |> put_view(EventAppWeb.EventView)
         |> render(:show, event: event, invites: invites, comments: comments, comment_changeset: changeset)
     end
-  end
-
-  def update(conn, args) do
-    delete(conn, args)
   end
 
   def delete(conn, %{"id" => id}) do
